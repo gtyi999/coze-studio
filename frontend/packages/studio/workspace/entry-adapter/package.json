@@ -7,7 +7,8 @@
   "maintainers": [],
   "exports": {
     "./develop": "./src/pages/develop/index.tsx",
-    "./library": "./src/pages/library/index.tsx"
+    "./library": "./src/pages/library/index.tsx",
+    "./im": "./src/pages/im/index.tsx"
   },
   "main": "src/index.ts",
   "typesVersions": {
@@ -17,6 +18,9 @@
       ],
       "library": [
         "./src/pages/library/index.tsx"
+      ],
+      "im": [
+        "./src/pages/im/index.tsx"
       ]
     }
   },
@@ -34,7 +38,9 @@
     "@coze-arch/i18n": "workspace:*",
     "@coze-arch/idl": "workspace:*",
     "@coze-foundation/space-store-adapter": "workspace:*",
+    "@coze-studio/api-schema": "workspace:*",
     "@coze-studio/workspace-base": "workspace:*",
+    "ahooks": "^3.7.8",
     "classnames": "^2.3.2"
   },
   "devDependencies": {

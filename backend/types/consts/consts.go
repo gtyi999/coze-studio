@@ -73,9 +73,12 @@ const (
 	RMQConsumeGroupApp       = "cg_search_app"
 	RMQConsumeGroupKnowledge = "cg_knowledge"
 
-	CozeConnectorID   = int64(10000010)
-	WebSDKConnectorID = int64(999)
-	APIConnectorID    = int64(1024)
+	CozeConnectorID     = int64(10000010)
+	WebSDKConnectorID   = int64(999)
+	APIConnectorID      = int64(1024)
+	FeishuConnectorID   = int64(10001001)
+	DingTalkConnectorID = int64(10001002)
+	WeComConnectorID    = int64(10001003)
 
 	SessionDataKeyInCtx = "session_data_key_in_ctx"
 	OpenapiAuthKeyInCtx = "openapi_auth_key_in_ctx"
@@ -143,4 +146,24 @@ const (
 	BaseConfigNameSpace  = "kv_config_ns"
 	KnowledgeConfigSpace = "kv_knowledge_ns"
 	ModelConfigSpace     = "kv_model_ns"
+)
+
+const (
+	IMFeishuAppIDEnv             = "IM_FEISHU_APP_ID"
+	IMFeishuAppSecretEnv         = "IM_FEISHU_APP_SECRET"
+	IMFeishuEncryptKeyEnv        = "IM_FEISHU_ENCRYPT_KEY"
+	IMFeishuVerificationTokenEnv = "IM_FEISHU_VERIFICATION_TOKEN"
+	IMFeishuAgentMapEnv          = "IM_FEISHU_AGENT_MAP"
+
+	IMDingTalkAppKeyEnv    = "IM_DINGTALK_APP_KEY"
+	IMDingTalkAppSecretEnv = "IM_DINGTALK_APP_SECRET"
+	IMDingTalkTokenEnv     = "IM_DINGTALK_TOKEN"
+	IMDingTalkAESKeyEnv    = "IM_DINGTALK_AES_KEY"
+	IMDingTalkAgentMapEnv  = "IM_DINGTALK_AGENT_MAP"
+
+	IMWeComCorpIDEnv         = "IM_WECOM_CORP_ID"
+	IMWeComTokenEnv          = "IM_WECOM_TOKEN"
+	IMWeComEncodingAESKeyEnv = "IM_WECOM_ENCODING_AES_KEY"
+	IMWeComAgentMapEnv       = "IM_WECOM_AGENT_MAP"
+	IMWeComAgentSecretMapEnv = "IM_WECOM_AGENT_SECRET_MAP"
 )

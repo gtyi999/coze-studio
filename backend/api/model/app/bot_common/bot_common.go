@@ -1143,7 +1143,7 @@ func (p *AgentType) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-// Version Compatibility: 0 - Old Version 1 - Rollback New Version 2 - Non-Rollback New Version 3 - Rollback New Version (no longer prompted)
+//Version Compatibility: 0 - Old Version 1 - Rollback New Version 2 - Non-Rollback New Version 3 - Rollback New Version (no longer prompted)
 type AgentVersionCompat int64
 
 const (
@@ -1966,39 +1966,36 @@ func (p *Scene) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-//	struct ContentAttachment {
-//	   1: required string FileID (api.body = "file_id")
-//	}
-//
-//	struct MetaContent{
-//	    1: required string Type (api.body="type"),
-//	    2: optional string Text ( api.body="text"),
-//	    3: optional string FileID (api.body="file_id"),
-//	    4: optional string FileURL (api.body="file_url"),
-//	    5: optional string Card (api.body="card"),
-//	}
-//
-//	struct EnterMessage  {
-//	    1: required string Role (api.body = "role")
-//	    2: string Content (api.body = "content")//content
-//	    3: map<string,string> MetaData(api.body = "meta_data")
-//	    4: string ContentType(api.body = "content_type")//text/card/object_string
-//	    5: string Type(api.body = "type")
-//	}
-//
-//	struct OpenMessageApi {
-//	    1: string Id (api.body = "id")//primary key ID
-//	    2: string BotId (api.body = "bot_id")//bot id//TODO All i64 plus annotation str, imported parameters and exported parameters are required
-//	    3: string Role(api.body = "role")
-//	    4: string Content (api.body = "content")//content
-//	    5: string ConversationId(api.body = "conversation_id")   // conversation id
-//	    6: map<string,string> MetaData(api.body = "meta_data")
-//	    7: string CreatedAt (api.body = "created_at")//create_time
-//	    8: string UpdatedAt (api.body = "updated_at")//Update time//Change TODO time to int
-//	    9: string ChatId(api.body = "chat_id")
-//	    10: string ContentType(api.body = "content_type")
-//	    11: string Type(api.body = "type")
-//	}
+//struct ContentAttachment {
+//    1: required string FileID (api.body = "file_id")
+//}
+// struct MetaContent{
+//     1: required string Type (api.body="type"),
+//     2: optional string Text ( api.body="text"),
+//     3: optional string FileID (api.body="file_id"),
+//     4: optional string FileURL (api.body="file_url"),
+//     5: optional string Card (api.body="card"),
+// }
+// struct EnterMessage  {
+//     1: required string Role (api.body = "role")
+//     2: string Content (api.body = "content")//content
+//     3: map<string,string> MetaData(api.body = "meta_data")
+//     4: string ContentType(api.body = "content_type")//text/card/object_string
+//     5: string Type(api.body = "type")
+// }
+// struct OpenMessageApi {
+//     1: string Id (api.body = "id")//primary key ID
+//     2: string BotId (api.body = "bot_id")//bot id//TODO All i64 plus annotation str, imported parameters and exported parameters are required
+//     3: string Role(api.body = "role")
+//     4: string Content (api.body = "content")//content
+//     5: string ConversationId(api.body = "conversation_id")   // conversation id
+//     6: map<string,string> MetaData(api.body = "meta_data")
+//     7: string CreatedAt (api.body = "created_at")//create_time
+//     8: string UpdatedAt (api.body = "updated_at")//Update time//Change TODO time to int
+//     9: string ChatId(api.body = "chat_id")
+//     10: string ContentType(api.body = "content_type")
+//     11: string Type(api.body = "type")
+// }
 type ReferenceUpdateType int64
 
 const (

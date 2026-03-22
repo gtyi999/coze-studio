@@ -1729,3 +1729,68 @@ func _createdatasetopenapiMw() []app.HandlerFunc {
 	// your code...
 	return nil
 }
+
+func _imMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _listimplatformsMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _platformMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _imcallbackMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _imcallback0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _feishuMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _feishueventMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _dingtalkMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _dingtalkeventMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _dingtalkevent0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _wecomMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _wecomeventMw() []app.HandlerFunc {
+	// your code...
+	return nil
+}
+
+func _wecomevent0Mw() []app.HandlerFunc {
+	// your code...
+	return nil
+}

@@ -26,6 +26,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/application/base/appinfra"
 	"github.com/coze-dev/coze-studio/backend/application/connector"
 	"github.com/coze-dev/coze-studio/backend/application/conversation"
+	"github.com/coze-dev/coze-studio/backend/application/im"
 	"github.com/coze-dev/coze-studio/backend/application/knowledge"
 	"github.com/coze-dev/coze-studio/backend/application/memory"
 	"github.com/coze-dev/coze-studio/backend/application/modelmgr"
@@ -118,6 +119,7 @@ type complexServices struct {
 	appSVC          *app.APPApplicationService
 	searchSVC       *search.SearchApplicationService
 	conversationSVC *conversation.ConversationApplicationService
+	imSVC           *im.IMApplicationService
 }
 
 func Init(ctx context.Context) (err error) {
@@ -263,6 +265,11 @@ func initComplexServices(ctx context.Context, p *primaryServices) (*complexServi
 	}
 
 	conversationSVC := conversation.InitService(p.toConversationComponents(singleAgentSVC))
+	imSVC := im.InitService(&im.ServiceComponents{
+		ConversationDomainSVC: conversationSVC.ConversationDomainSVC,
+		SingleAgentDomainSVC:  singleAgentSVC.DomainSVC,
+		CacheCli:              p.basicServices.infra.CacheCli,
+	})
 
 	return &complexServices{
 		primaryServices: p,
@@ -270,6 +277,7 @@ func initComplexServices(ctx context.Context, p *primaryServices) (*complexServi
 		appSVC:          appSVC,
 		searchSVC:       searchSVC,
 		conversationSVC: conversationSVC,
+		imSVC:           imSVC,
 	}, nil
 }
 

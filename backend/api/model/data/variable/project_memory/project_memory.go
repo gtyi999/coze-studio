@@ -2711,7 +2711,7 @@ func (p *GetMemoryVariableMetaReq) String() string {
 
 }
 
-// It should be the rpc interface for workflow, no authentication is required, VariableChannel
+//It should be the rpc interface for workflow, no authentication is required, VariableChannel
 type GetMemoryVariableMetaResp struct {
 	VariableMap map[VariableChannel][]*Variable `thrift:"VariableMap,1" form:"VariableMap" json:"VariableMap" query:"VariableMap"`
 	Code        int64                           `thrift:"code,253,required" form:"code,required" json:"code,required" query:"code,required"`

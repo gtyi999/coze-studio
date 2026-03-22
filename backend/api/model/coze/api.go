@@ -15,6 +15,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/api/model/data/knowledge"
 	"github.com/coze-dev/coze-studio/backend/api/model/data/variable"
 	"github.com/coze-dev/coze-studio/backend/api/model/file/upload"
+	"github.com/coze-dev/coze-studio/backend/api/model/im"
 	"github.com/coze-dev/coze-studio/backend/api/model/marketplace/product_public_api"
 	"github.com/coze-dev/coze-studio/backend/api/model/passport"
 	"github.com/coze-dev/coze-studio/backend/api/model/permission/openapiauth"
@@ -492,6 +493,32 @@ func NewConfigServiceClient(c thrift.TClient) *ConfigServiceClient {
 	}
 }
 
+type IMService interface {
+	im.IMService
+}
+
+type IMServiceClient struct {
+	*im.IMServiceClient
+}
+
+func NewIMServiceClientFactory(t thrift.TTransport, f thrift.TProtocolFactory) *IMServiceClient {
+	return &IMServiceClient{
+		IMServiceClient: im.NewIMServiceClientFactory(t, f),
+	}
+}
+
+func NewIMServiceClientProtocol(t thrift.TTransport, iprot thrift.TProtocol, oprot thrift.TProtocol) *IMServiceClient {
+	return &IMServiceClient{
+		IMServiceClient: im.NewIMServiceClientProtocol(t, iprot, oprot),
+	}
+}
+
+func NewIMServiceClient(c thrift.TClient) *IMServiceClient {
+	return &IMServiceClient{
+		IMServiceClient: im.NewIMServiceClient(c),
+	}
+}
+
 type IntelligenceServiceProcessor struct {
 	*intelligence.IntelligenceServiceProcessor
 }
@@ -651,5 +678,14 @@ type ConfigServiceProcessor struct {
 
 func NewConfigServiceProcessor(handler ConfigService) *ConfigServiceProcessor {
 	self := &ConfigServiceProcessor{config.NewConfigServiceProcessor(handler)}
+	return self
+}
+
+type IMServiceProcessor struct {
+	*im.IMServiceProcessor
+}
+
+func NewIMServiceProcessor(handler IMService) *IMServiceProcessor {
+	self := &IMServiceProcessor{im.NewIMServiceProcessor(handler)}
 	return self
 }

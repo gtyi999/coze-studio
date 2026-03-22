@@ -22,8 +22,11 @@ import (
 )
 
 var PublishConnectorIDWhiteList = map[int64]bool{
-	consts.WebSDKConnectorID: true,
-	consts.APIConnectorID:    true,
+	consts.WebSDKConnectorID:   true,
+	consts.APIConnectorID:      true,
+	consts.FeishuConnectorID:   true,
+	consts.DingTalkConnectorID: true,
+	consts.WeComConnectorID:    true,
 }
 
 type PublishConnectorData struct {

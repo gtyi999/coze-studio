@@ -92,7 +92,8 @@ func (a *appServiceImpl) publishByConnectors(ctx context.Context, recordID int64
 
 	for cid := range req.ConnectorPublishConfigs {
 		switch cid {
-		case commonConsts.APIConnectorID, commonConsts.WebSDKConnectorID:
+		case commonConsts.APIConnectorID, commonConsts.WebSDKConnectorID,
+			commonConsts.FeishuConnectorID, commonConsts.DingTalkConnectorID, commonConsts.WeComConnectorID:
 			updateSuccessErr := a.APPRepo.UpdateConnectorPublishStatus(ctx, recordID, entity.ConnectorPublishStatusOfSuccess)
 			if updateSuccessErr == nil {
 				continue

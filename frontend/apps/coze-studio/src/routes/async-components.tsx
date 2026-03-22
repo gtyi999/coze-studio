@@ -53,6 +53,9 @@ export const Develop = lazy(() => import('../pages/develop'));
 // resource library page
 export const Library = lazy(() => import('../pages/library'));
 
+// IM management page
+export const IMManage = lazy(() => import('../pages/im'));
+
 // Agent IDE Layout Component
 export const AgentIDELayout = lazy(
   () => import('@coze-agent-ide/layout-adapter'),

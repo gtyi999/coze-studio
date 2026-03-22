@@ -444,7 +444,7 @@ func (p *Tag) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-// Node structure
+//Node structure
 type NodeType int64
 
 const (
@@ -642,7 +642,7 @@ func (p *NodeType) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-// The node template type is basically the same as NodeType. One copy is due to the addition of an Imageflow type to avoid affecting the business semantics of the original NodeType
+//The node template type is basically the same as NodeType. One copy is due to the addition of an Imageflow type to avoid affecting the business semantics of the original NodeType
 type NodeTemplateType int64
 
 const (
@@ -1256,7 +1256,7 @@ func (p *PluginParamTypeFormat) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-// Status, 1 Not Submitted 2 Submitted 3 Submitted 4 Obsolete
+//Status, 1 Not Submitted 2 Submitted 3 Submitted 4 Obsolete
 type WorkFlowDevStatus int64
 
 const (
@@ -1313,7 +1313,7 @@ func (p *WorkFlowDevStatus) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-// Status, 1 Unpublishable 2 Publishable 3 Published 4 Deleted 5 Removed
+//Status, 1 Unpublishable 2 Publishable 3 Published 4 Deleted 5 Removed
 type WorkFlowStatus int64
 
 const (

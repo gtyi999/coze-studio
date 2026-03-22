@@ -150,7 +150,7 @@ func (p *ParameterLocation) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-// plugin enumeration value
+//plugin enumeration value
 type PluginParamTypeFormat int64
 
 const (

@@ -24,6 +24,9 @@ import (
 var ConnectorIDWhiteList = []int64{
 	consts.WebSDKConnectorID,
 	consts.APIConnectorID,
+	consts.FeishuConnectorID,
+	consts.DingTalkConnectorID,
+	consts.WeComConnectorID,
 }
 
 type ConnectorPublishRecord = model.ConnectorPublishRecord

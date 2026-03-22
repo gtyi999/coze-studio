@@ -37,6 +37,7 @@ import {
   ProjectIDE,
   ProjectIDEPublish,
   Library,
+  IMManage,
   PluginLayout,
   PluginToolPage,
   PluginPage,
@@ -178,6 +179,14 @@ export const router: ReturnType<typeof createBrowserRouter> =
                   Component: Library,
                   loader: () => ({
                     subMenuKey: SpaceSubModuleEnum.LIBRARY,
+                  }),
+                },
+
+                {
+                  path: 'im',
+                  Component: IMManage,
+                  loader: () => ({
+                    subMenuKey: SpaceSubModuleEnum.IM,
                   }),
                 },
 

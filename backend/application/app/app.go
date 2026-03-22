@@ -311,6 +311,11 @@ func (a *APPApplicationService) getAPPPublishConnectorList(ctx context.Context, 
 			if err != nil {
 				return nil, err
 			}
+		case consts.FeishuConnectorID, consts.DingTalkConnectorID, consts.WeComConnectorID:
+			info, err = a.packIMConnectorInfo(ctx, c)
+			if err != nil {
+				return nil, err
+			}
 		default:
 			logs.CtxWarnf(ctx, "unsupported connector id '%v'", c.ID)
 			continue
@@ -352,6 +357,21 @@ func (a *APPApplicationService) packChatSDKConnectorInfo(ctx context.Context, c 
 		ID:                      c.ID,
 		BindType:                publishAPI.ConnectorBindType_WebSDKBind,
 		ConnectorClassification: publishAPI.ConnectorClassification_APIOrSDK,
+		BindInfo:                map[string]string{},
+		Name:                    c.Name,
+		IconURL:                 c.URL,
+		Description:             c.Desc,
+		AllowPublish:            true,
+	}
+
+	return info, nil
+}
+
+func (a *APPApplicationService) packIMConnectorInfo(ctx context.Context, c *connectorModel.Connector) (*publishAPI.PublishConnectorInfo, error) {
+	info := &publishAPI.PublishConnectorInfo{
+		ID:                      c.ID,
+		BindType:                publishAPI.ConnectorBindType_NoBindRequired,
+		ConnectorClassification: publishAPI.ConnectorClassification_SocialPlatform,
 		BindInfo:                map[string]string{},
 		Name:                    c.Name,
 		IconURL:                 c.URL,

@@ -41,9 +41,12 @@ func NewService(tos storage.Storage) Connector {
 
 var i18n2ConnectorDesc = map[i18n.Locale]map[int64]string{
 	i18n.LocaleEN: {
-		consts.WebSDKConnectorID: "Deploy your project to the Chat SDK. This publishing method is supported only for projects that have created a conversation flow, please refer to [Installation Guidelines](coze://web-sdk-guide) for installation methods.",
-		consts.APIConnectorID:    "Supports OAuth 2.0 and personal access tokens",
-		consts.CozeConnectorID:   "Coze",
+		consts.WebSDKConnectorID:   "Deploy your project to the Chat SDK. This publishing method is supported only for projects that have created a conversation flow, please refer to [Installation Guidelines](coze://web-sdk-guide) for installation methods.",
+		consts.APIConnectorID:      "Supports OAuth 2.0 and personal access tokens",
+		consts.CozeConnectorID:     "Coze",
+		consts.FeishuConnectorID:   "Receive Feishu messages through the unified IM callback entry and forward them to the published Coze agent.",
+		consts.DingTalkConnectorID: "Receive DingTalk messages through the unified IM callback entry and forward them to the published Coze agent.",
+		consts.WeComConnectorID:    "Receive WeCom messages through the unified IM callback entry and forward them to the published Coze agent.",
 	},
 }
 
@@ -71,6 +74,30 @@ func (c *connectorImpl) AllConnectorInfo(ctx context.Context) []*entity.Connecto
 				Name: "coze",
 				URI:  "default_icon/connector-coze.png",
 				Desc: "Coze",
+			},
+		},
+		{
+			Connector: &connector.Connector{
+				ID:   consts.FeishuConnectorID,
+				Name: "Feishu",
+				URI:  "official_plugin_icon/plugin_lark_message.png",
+				Desc: "閫氳繃缁熶竴 IM 鍥炶皟鍏ュ彛鎺ユ敹椋炰功娑堟伅锛屽苟杞彂鍒板凡鍙戝竷鐨勬櫤鑳戒綋銆?",
+			},
+		},
+		{
+			Connector: &connector.Connector{
+				ID:   consts.DingTalkConnectorID,
+				Name: "DingTalk",
+				URI:  "default_icon/connector-api.jpg",
+				Desc: "閫氳繃缁熶竴 IM 鍥炶皟鍏ュ彛鎺ユ敹閽夐拤娑堟伅锛屽苟杞彂鍒板凡鍙戝竷鐨勬櫤鑳戒綋銆?",
+			},
+		},
+		{
+			Connector: &connector.Connector{
+				ID:   consts.WeComConnectorID,
+				Name: "WeCom",
+				URI:  "default_icon/connector-api.jpg",
+				Desc: "閫氳繃缁熶竴 IM 鍥炶皟鍏ュ彛鎺ユ敹浼佷笟寰俊娑堟伅锛屽苟杞彂鍒板凡鍙戝竷鐨勬櫤鑳戒綋銆?",
 			},
 		},
 	}

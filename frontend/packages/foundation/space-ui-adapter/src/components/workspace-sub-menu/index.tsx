@@ -21,6 +21,8 @@ import { useRouteConfig } from '@coze-arch/bot-hooks';
 import {
   IconCozBot,
   IconCozBotFill,
+  IconCozChat,
+  IconCozChatFill,
   IconCozKnowledge,
   IconCozKnowledgeFill,
 } from '@coze-arch/coze-design/icons';
@@ -47,6 +49,13 @@ export const WorkspaceSubMenu = () => {
       title: () => I18n.t('navigation_workspace_library', {}, 'Library'),
       path: SpaceSubModuleEnum.LIBRARY,
       dataTestId: 'navigation_workspace_library',
+    },
+    {
+      icon: <IconCozChat />,
+      activeIcon: <IconCozChatFill />,
+      title: () => I18n.t('navigation_workspace_im', {}, 'IM'),
+      path: SpaceSubModuleEnum.IM,
+      dataTestId: 'navigation_workspace_im',
     },
   ];
 

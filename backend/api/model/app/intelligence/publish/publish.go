@@ -387,7 +387,7 @@ func (p *PublishRecordStatus) Value() (driver.Value, error) {
 	return int64(*p), nil
 }
 
-// project
+//project
 type ConnectorPublishStatus int64
 
 const (

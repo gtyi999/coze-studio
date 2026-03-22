@@ -136,6 +136,8 @@ func (s *singleAgentImpl) GetPublishConnectorList(ctx context.Context, agentID i
 		} else if v.ID == consts.APIConnectorID {
 			c.BindType = developer_api.BindType_ApiBind
 			c.AuthLoginInfo = &developer_api.AuthLoginInfo{}
+		} else if v.ID == consts.FeishuConnectorID || v.ID == consts.DingTalkConnectorID || v.ID == consts.WeComConnectorID {
+			c.BindType = developer_api.BindType_NoBindRequired
 		}
 
 		publishConnectorList = append(publishConnectorList, c)
