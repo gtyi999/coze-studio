@@ -1,5 +1,5 @@
 # Build stage
-FROM node:22-alpine AS builder
+FROM docker.m.daocloud.io/library/node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -30,14 +30,16 @@ COPY scripts/ ./scripts/
 # Convert line endings for shell scripts in scripts directory to Unix format
 RUN find . -name "*.sh" -type f -exec dos2unix {} \;
 
-# Install all dependencies
-RUN chmod +x scripts/hooks/post-rush-install.sh && rm -rf /app/common/temp && rush install
+# Install dependencies. Some local snapshots ship with a stale shrinkwrap,
+# so fall back to regenerating it inside the image when install validation fails.
+RUN chmod +x scripts/hooks/post-rush-install.sh && rm -rf /app/common/temp && \
+    (rush install || rush update --full)
 
 # Use rush build to build the specific project
 RUN rush build --to @coze-studio/app
 
 # Production image stage
-FROM nginx:1.25-alpine
+FROM docker.m.daocloud.io/library/nginx:1.25-alpine
 
 
 # if you located in China, you can use aliyun mirror to speed up
@@ -47,6 +49,8 @@ RUN apk add --no-cache bash
 
 # Copy build artifacts to nginx static directory
 COPY --from=builder /app/frontend/apps/coze-studio/dist /usr/share/nginx/html
+COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 8888
 

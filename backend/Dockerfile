@@ -1,5 +1,5 @@
 # Stage 1: Builder for Go application
-FROM golang:1.24-alpine AS builder
+FROM docker.m.daocloud.io/library/golang:1.24-alpine AS builder
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ RUN go build -ldflags="-s -w" -o /app/opencoze main.go
 
 
 # Stage 2: Final image
-FROM alpine:3.22.0
+FROM docker.m.daocloud.io/library/alpine:3.22.0
 
 WORKDIR /app
 

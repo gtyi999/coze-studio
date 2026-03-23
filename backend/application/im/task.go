@@ -167,6 +167,27 @@ func (a *IMApplicationService) consumeGatewayResponse(ctx context.Context, adapt
 }
 
 func (a *IMApplicationService) deliverTaskResult(ctx context.Context, adapter imService.PlatformAdapter, task *imEntity.TaskRecord, resp *imEntity.AgentResponse) error {
+	if task.PreviewOnly {
+		nowMS := nowMillis()
+		task.ResultDelivered = true
+		task.DeliveredAtMS = nowMS
+		task.FinishedAtMS = nowMS
+		task.UpdatedAtMS = nowMS
+		task.NextRetryAtMS = 0
+		task.LastError = ""
+
+		switch resp.Status {
+		case imEntity.AgentResponseStatusSuccess:
+			task.Status = imEntity.TaskStatusSuccess
+		case imEntity.AgentResponseStatusFailed:
+			task.Status = imEntity.TaskStatusFailed
+		default:
+			task.Status = imEntity.TaskStatusRunning
+		}
+
+		return a.TaskRepo.Save(ctx, task)
+	}
+
 	if task.Message == nil {
 		return a.markTaskFailed(ctx, task, "task message context is missing")
 	}
@@ -209,11 +230,13 @@ func (a *IMApplicationService) scheduleRetryOrFail(ctx context.Context, task *im
 		return a.TaskExecutor.SubmitAfter(ctx, task.ID, nextRetryDelay(task.RetryCount))
 	}
 
-	if adapter, err := a.IMDomainSVC.GetAdapter(task.Platform); err == nil && task.Message != nil {
-		_ = adapter.SendReply(ctx, task.Message, &imEntity.AgentResponse{
-			Status: imEntity.AgentResponseStatusFailed,
-			Text:   firstNonEmpty(strings.TrimSpace(reason), "task execution failed"),
-		})
+	if !task.PreviewOnly {
+		if adapter, err := a.IMDomainSVC.GetAdapter(task.Platform); err == nil && task.Message != nil {
+			_ = adapter.SendReply(ctx, task.Message, &imEntity.AgentResponse{
+				Status: imEntity.AgentResponseStatusFailed,
+				Text:   firstNonEmpty(strings.TrimSpace(reason), "task execution failed"),
+			})
+		}
 	}
 
 	return a.markTaskFailed(ctx, task, reason)

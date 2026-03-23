@@ -18,15 +18,12 @@ package repository
 
 import (
 	"context"
-	"time"
 
 	"github.com/coze-dev/coze-studio/backend/domain/im/entity"
 )
 
-type TaskRepository interface {
-	Save(ctx context.Context, task *entity.TaskRecord) error
-	Get(ctx context.Context, taskID string) (*entity.TaskRecord, bool, error)
-	ListBySpace(ctx context.Context, spaceID string) ([]*entity.TaskRecord, error)
-	TryAcquireExecution(ctx context.Context, taskID string, ttl time.Duration) (bool, error)
-	ReleaseExecution(ctx context.Context, taskID string) error
+type ChannelConfigRepository interface {
+	Save(ctx context.Context, config *entity.ChannelConfig) error
+	Get(ctx context.Context, configID string) (*entity.ChannelConfig, bool, error)
+	ListBySpace(ctx context.Context, spaceID string) ([]*entity.ChannelConfig, error)
 }

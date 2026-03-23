@@ -20,6 +20,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"sort"
 	"strings"
 	"time"
 
@@ -32,6 +33,7 @@ import (
 const (
 	taskKeyPattern      = "im:task:%s"
 	taskLockKeyPattern  = "im:task:lock:%s"
+	taskSpaceKeyPattern = "im:task:space:%s"
 	defaultTaskCacheTTL = 7 * 24 * time.Hour
 )
 
@@ -55,7 +57,20 @@ func (r *cacheRepository) Save(ctx context.Context, task *imEntity.TaskRecord) e
 		return err
 	}
 
-	return r.cacheCli.Set(ctx, fmt.Sprintf(taskKeyPattern, task.ID), payload, defaultTaskCacheTTL).Err()
+	if err = r.cacheCli.Set(ctx, fmt.Sprintf(taskKeyPattern, task.ID), payload, defaultTaskCacheTTL).Err(); err != nil {
+		return err
+	}
+
+	if strings.TrimSpace(task.SpaceID) == "" {
+		return nil
+	}
+
+	return r.cacheCli.HSet(
+		ctx,
+		fmt.Sprintf(taskSpaceKeyPattern, task.SpaceID),
+		task.ID,
+		fmt.Sprintf("%d", task.UpdatedAtMS),
+	).Err()
 }
 
 func (r *cacheRepository) Get(ctx context.Context, taskID string) (*imEntity.TaskRecord, bool, error) {
@@ -77,6 +92,38 @@ func (r *cacheRepository) Get(ctx context.Context, taskID string) (*imEntity.Tas
 	}
 
 	return &task, true, nil
+}
+
+func (r *cacheRepository) ListBySpace(ctx context.Context, spaceID string) ([]*imEntity.TaskRecord, error) {
+	if strings.TrimSpace(spaceID) == "" {
+		return nil, nil
+	}
+
+	index, err := r.cacheCli.HGetAll(ctx, fmt.Sprintf(taskSpaceKeyPattern, spaceID)).Result()
+	if err != nil {
+		return nil, err
+	}
+	if len(index) == 0 {
+		return nil, nil
+	}
+
+	tasks := make([]*imEntity.TaskRecord, 0, len(index))
+	for taskID := range index {
+		task, found, getErr := r.Get(ctx, taskID)
+		if getErr != nil {
+			return nil, getErr
+		}
+		if !found || task == nil {
+			continue
+		}
+		tasks = append(tasks, task)
+	}
+
+	sort.Slice(tasks, func(i, j int) bool {
+		return tasks[i].UpdatedAtMS > tasks[j].UpdatedAtMS
+	})
+
+	return tasks, nil
 }
 
 func (r *cacheRepository) TryAcquireExecution(ctx context.Context, taskID string, ttl time.Duration) (bool, error) {

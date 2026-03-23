@@ -35,6 +35,7 @@ import (
 type IMApplicationService struct {
 	IMDomainSVC          imService.Service
 	SingleAgentDomainSVC singleagent.SingleAgent
+	ChannelConfigRepo    imRepo.ChannelConfigRepository
 	TaskRepo             imRepo.TaskRepository
 	TaskExecutor         AsyncTaskExecutor
 	Gateway              *CozeAgentGateway

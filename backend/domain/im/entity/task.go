@@ -29,6 +29,8 @@ const (
 type TaskRecord struct {
 	ID              string         `json:"id"`
 	Platform        Platform       `json:"platform"`
+	SpaceID         string         `json:"space_id,omitempty"`
+	ConfigID        string         `json:"config_id,omitempty"`
 	Status          TaskStatus     `json:"status"`
 	IdempotencyKey  string         `json:"idempotency_key,omitempty"`
 	RetryCount      int32          `json:"retry_count"`
@@ -46,6 +48,7 @@ type TaskRecord struct {
 	Request         *AgentRequest  `json:"request,omitempty"`
 	Ticket          *TaskTicket    `json:"ticket,omitempty"`
 	Result          *AgentResponse `json:"result,omitempty"`
+	PreviewOnly     bool           `json:"preview_only,omitempty"`
 }
 
 func (t *TaskRecord) IsFinal() bool {

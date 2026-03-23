@@ -21,6 +21,7 @@ import (
 	conversation "github.com/coze-dev/coze-studio/backend/domain/conversation/conversation/service"
 	imDomain "github.com/coze-dev/coze-studio/backend/domain/im/service"
 	"github.com/coze-dev/coze-studio/backend/infra/cache"
+	"github.com/coze-dev/coze-studio/backend/infra/im/configrepo"
 	"github.com/coze-dev/coze-studio/backend/infra/im/factory"
 	_ "github.com/coze-dev/coze-studio/backend/infra/im/impl/dingtalk"
 	_ "github.com/coze-dev/coze-studio/backend/infra/im/impl/feishu"
@@ -38,11 +39,13 @@ var IMSVC *IMApplicationService
 
 func InitService(c *ServiceComponents) *IMApplicationService {
 	domainSVC := imDomain.NewService(factory.BuildAll()...)
+	channelConfigRepo := configrepo.New(c.CacheCli)
 	taskRepo := taskrepo.New(c.CacheCli)
 
 	IMSVC = &IMApplicationService{
 		IMDomainSVC:          domainSVC,
 		SingleAgentDomainSVC: c.SingleAgentDomainSVC,
+		ChannelConfigRepo:    channelConfigRepo,
 		TaskRepo:             taskRepo,
 		Gateway: NewCozeAgentGateway(&CozeAgentGatewayComponents{
 			ConversationDomainSVC: c.ConversationDomainSVC,

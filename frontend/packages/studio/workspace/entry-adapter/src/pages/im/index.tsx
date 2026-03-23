@@ -393,8 +393,9 @@ export const IMManagePage: FC<{ spaceId: string }> = ({ spaceId }) => {
             ) : null}
           </div>
         </Layout.Header>
-        <Layout.Content className="overflow-auto pb-[24px]">
+        <Layout.Content className="!h-auto !min-h-0 !flex-1 overflow-auto pb-[24px]">
           <Tabs
+            className="flex min-h-0 flex-1 flex-col [&_.semi-tabs-content]:min-h-0 [&_.semi-tabs-content]:flex-1"
             activeKey={activeTab}
             onChange={key => setActiveTab(key as IMPageTab)}
           >

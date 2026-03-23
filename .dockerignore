@@ -8,6 +8,8 @@
 **/.rush/temp
 **/.rush/build-cache
 **/common/temp
+bin
+docker/data
 
 # Exclude development files
 **/.git
