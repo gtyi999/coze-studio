@@ -38,6 +38,10 @@ RUN chmod +x scripts/hooks/post-rush-install.sh && rm -rf /app/common/temp && \
 # Use rush build to build the specific project
 RUN rush build --to @coze-studio/app
 
+# Package the dist directory as a tarball. Direct cross-stage COPY has been
+# producing zero-filled JS assets in the final image on this environment.
+RUN tar -C /app/frontend/apps/coze-studio/dist -cf /tmp/coze-studio-app-dist.tar .
+
 # Production image stage
 FROM docker.m.daocloud.io/library/nginx:1.25-alpine
 
@@ -48,7 +52,10 @@ RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories
 RUN apk add --no-cache bash
 
 # Copy build artifacts to nginx static directory
-COPY --from=builder /app/frontend/apps/coze-studio/dist /usr/share/nginx/html
+COPY --from=builder /tmp/coze-studio-app-dist.tar /tmp/coze-studio-app-dist.tar
+RUN mkdir -p /usr/share/nginx/html && \
+    tar -xf /tmp/coze-studio-app-dist.tar -C /usr/share/nginx/html && \
+    rm -f /tmp/coze-studio-app-dist.tar
 COPY docker/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY docker/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
