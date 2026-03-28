@@ -13,8 +13,8 @@ services:
       MYSQL_USER: ${MYSQL_USER:-coze}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD:-coze123}
     env_file: *env_file
-    # ports:
-    #   - '3306'
+    ports:
+      - '127.0.0.1:3306:3306'
     volumes:
       - ./data/mysql:/var/lib/mysql
       - ./volumes/mysql/schema.sql:/docker-entrypoint-initdb.d/init.sql
@@ -322,9 +322,9 @@ services:
       timeout: 10s
       retries: 10
       start_period: 10s
-    # ports:
-    #   - '19530'
-    #   - '9091'
+    ports:
+      - '127.0.0.1:19530:19530'
+      - '127.0.0.1:9091:9091'
     depends_on:
       etcd:
         condition: service_healthy

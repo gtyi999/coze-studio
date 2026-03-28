@@ -52,6 +52,7 @@ node_modules
 common/temp
 .rush
 .eslintcache
+.venv-milvus/
 
 
 backend/conf/model/*.yaml
