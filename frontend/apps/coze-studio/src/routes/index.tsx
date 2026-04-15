@@ -38,6 +38,7 @@ import {
   ProjectIDEPublish,
   Library,
   IMManage,
+  CRMManage,
   PluginLayout,
   PluginToolPage,
   PluginPage,
@@ -187,6 +188,13 @@ export const router: ReturnType<typeof createBrowserRouter> =
                   Component: IMManage,
                   loader: () => ({
                     subMenuKey: SpaceSubModuleEnum.IM,
+                  }),
+                },
+                {
+                  path: 'crm',
+                  Component: CRMManage,
+                  loader: () => ({
+                    subMenuKey: SpaceSubModuleEnum.CRM,
                   }),
                 },
 

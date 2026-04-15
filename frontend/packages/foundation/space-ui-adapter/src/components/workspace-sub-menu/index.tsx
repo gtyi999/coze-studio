@@ -25,6 +25,8 @@ import {
   IconCozChatFill,
   IconCozKnowledge,
   IconCozKnowledgeFill,
+  IconCozPeople,
+  IconCozPeopleFill,
 } from '@coze-arch/coze-design/icons';
 import { Space, Avatar, Typography } from '@coze-arch/coze-design';
 
@@ -56,6 +58,13 @@ export const WorkspaceSubMenu = () => {
       title: () => I18n.t('navigation_workspace_im', {}, 'IM'),
       path: SpaceSubModuleEnum.IM,
       dataTestId: 'navigation_workspace_im',
+    },
+    {
+      icon: <IconCozPeople />,
+      activeIcon: <IconCozPeopleFill />,
+      title: () => I18n.t('navigation_workspace_crm', {}, 'CRM'),
+      path: SpaceSubModuleEnum.CRM,
+      dataTestId: 'navigation_workspace_crm',
     },
   ];
 

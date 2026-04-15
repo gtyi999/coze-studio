@@ -56,6 +56,9 @@ export const Library = lazy(() => import('../pages/library'));
 // IM management page
 export const IMManage = lazy(() => import('../pages/im'));
 
+// CRM management page
+export const CRMManage = lazy(() => import('../pages/crm'));
+
 // Agent IDE Layout Component
 export const AgentIDELayout = lazy(
   () => import('@coze-agent-ide/layout-adapter'),

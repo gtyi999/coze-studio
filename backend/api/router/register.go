@@ -36,6 +36,7 @@ func GeneratedRegister(r *server.Hertz) {
 	// INSERT_POINT: DO NOT DELETE THIS LINE!
 	coze.Register(r)
 	coze.RegisterManualIMRoutes(r)
+	coze.RegisterManualCRMRoutes(r)
 	staticFileRegister(r)
 }
 

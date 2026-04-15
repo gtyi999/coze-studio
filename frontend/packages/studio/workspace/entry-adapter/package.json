@@ -8,7 +8,8 @@
   "exports": {
     "./develop": "./src/pages/develop/index.tsx",
     "./library": "./src/pages/library/index.tsx",
-    "./im": "./src/pages/im/index.tsx"
+    "./im": "./src/pages/im/index.tsx",
+    "./crm": "./src/pages/crm/index.tsx"
   },
   "main": "src/index.ts",
   "typesVersions": {
@@ -21,6 +22,9 @@
       ],
       "im": [
         "./src/pages/im/index.tsx"
+      ],
+      "crm": [
+        "./src/pages/crm/index.tsx"
       ]
     }
   },

@@ -9,7 +9,8 @@
     ".": "./src/index.ts",
     "./passport": "./src/idl/passport/passport.ts",
     "./marketplace": "./src/idl/marketplace/public_api.ts",
-    "./im": "./src/idl/im/im.ts"
+    "./im": "./src/idl/im/im.ts",
+    "./crm": "./src/idl/crm/crm.ts"
   },
   "main": "src/index.ts",
   "typesVersions": {
@@ -22,6 +23,9 @@
       ],
       "im": [
         "./src/idl/im/im.ts"
+      ],
+      "crm": [
+        "./src/idl/crm/crm.ts"
       ]
     }
   },

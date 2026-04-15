@@ -26,6 +26,7 @@ import (
 	"github.com/coze-dev/coze-studio/backend/application/base/appinfra"
 	"github.com/coze-dev/coze-studio/backend/application/connector"
 	"github.com/coze-dev/coze-studio/backend/application/conversation"
+	"github.com/coze-dev/coze-studio/backend/application/crm"
 	"github.com/coze-dev/coze-studio/backend/application/im"
 	"github.com/coze-dev/coze-studio/backend/application/knowledge"
 	"github.com/coze-dev/coze-studio/backend/application/memory"
@@ -99,6 +100,7 @@ type basicServices struct {
 	uploadSVC    *upload.UploadService
 
 	permissionSVC *permission.PermissionApplicationService
+	crmSVC        *crm.CRMApplicationService
 }
 
 type primaryServices struct {
@@ -196,6 +198,10 @@ func initBasicServices(ctx context.Context, infra *appinfra.AppDependencies, e *
 	})
 
 	permissionSVC := permission.InitService(&permission.ServiceComponents{})
+	crmSVC := crm.InitService(&crm.ServiceComponents{
+		DB:    infra.DB,
+		IDGen: infra.IDGenSVC,
+	})
 
 	return &basicServices{
 		infra:        infra,
@@ -209,6 +215,7 @@ func initBasicServices(ctx context.Context, infra *appinfra.AppDependencies, e *
 		uploadSVC:    uploadSVC,
 
 		permissionSVC: permissionSVC,
+		crmSVC:        crmSVC,
 	}, nil
 }
 

@@ -4739,6 +4739,893 @@ table "workflow_version" {
     columns = [column.workflow_id, column.version]
   }
 }
+table "crm_customer" {
+  schema  = schema.opencoze
+  comment = "CRM customer master data"
+  column "id" {
+    null     = false
+    type     = bigint
+    unsigned = true
+    comment  = "Primary Key ID"
+  }
+  column "tenant_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Tenant ID"
+  }
+  column "space_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Workspace ID"
+  }
+  column "customer_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Customer Name"
+  }
+  column "customer_code" {
+    null    = true
+    type    = varchar(64)
+    comment = "Customer Code"
+  }
+  column "industry" {
+    null    = true
+    type    = varchar(128)
+    comment = "Industry"
+  }
+  column "level" {
+    null    = true
+    type    = varchar(64)
+    comment = "Customer Level"
+  }
+  column "owner_user_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Owner User ID"
+  }
+  column "owner_user_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Owner User Name"
+  }
+  column "status" {
+    null    = false
+    type    = varchar(32)
+    default = "active"
+    comment = "Business Status"
+  }
+  column "mobile" {
+    null    = true
+    type    = varchar(32)
+    comment = "Mobile"
+  }
+  column "email" {
+    null    = true
+    type    = varchar(128)
+    comment = "Email"
+  }
+  column "address" {
+    null    = true
+    type    = varchar(512)
+    comment = "Address"
+  }
+  column "remark" {
+    null    = true
+    type    = text
+    comment = "Remark"
+  }
+  column "created_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Created By"
+  }
+  column "updated_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Updated By"
+  }
+  column "created_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Create Time in Milliseconds"
+  }
+  column "updated_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Update Time in Milliseconds"
+  }
+  column "is_deleted" {
+    null    = false
+    type    = tinyint
+    default = 0
+    comment = "Soft Delete Flag"
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_tenant_is_deleted" {
+    columns = [column.tenant_id, column.is_deleted]
+  }
+  index "idx_tenant_space_deleted" {
+    columns = [column.tenant_id, column.space_id, column.is_deleted]
+  }
+  index "idx_owner_user_id" {
+    columns = [column.owner_user_id]
+  }
+  index "idx_status" {
+    columns = [column.status]
+  }
+  index "idx_created_at" {
+    columns = [column.created_at]
+  }
+  index "idx_customer_code" {
+    columns = [column.customer_code]
+  }
+  index "idx_customer_name" {
+    columns = [column.customer_name]
+  }
+}
+table "crm_contact" {
+  schema  = schema.opencoze
+  comment = "CRM customer contact data"
+  column "id" {
+    null     = false
+    type     = bigint
+    unsigned = true
+    comment  = "Primary Key ID"
+  }
+  column "tenant_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Tenant ID"
+  }
+  column "space_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Workspace ID"
+  }
+  column "customer_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Customer ID"
+  }
+  column "contact_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Contact Name"
+  }
+  column "mobile" {
+    null    = true
+    type    = varchar(32)
+    comment = "Mobile"
+  }
+  column "email" {
+    null    = true
+    type    = varchar(128)
+    comment = "Email"
+  }
+  column "title" {
+    null    = true
+    type    = varchar(128)
+    comment = "Job Title"
+  }
+  column "is_primary" {
+    null    = false
+    type    = tinyint
+    default = 0
+    comment = "Primary Contact Flag"
+  }
+  column "status" {
+    null    = false
+    type    = varchar(32)
+    default = "active"
+    comment = "Business Status"
+  }
+  column "remark" {
+    null    = true
+    type    = text
+    comment = "Remark"
+  }
+  column "created_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Created By"
+  }
+  column "updated_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Updated By"
+  }
+  column "created_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Create Time in Milliseconds"
+  }
+  column "updated_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Update Time in Milliseconds"
+  }
+  column "is_deleted" {
+    null    = false
+    type    = tinyint
+    default = 0
+    comment = "Soft Delete Flag"
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_tenant_is_deleted" {
+    columns = [column.tenant_id, column.is_deleted]
+  }
+  index "idx_tenant_space_deleted" {
+    columns = [column.tenant_id, column.space_id, column.is_deleted]
+  }
+  index "idx_customer_id" {
+    columns = [column.customer_id]
+  }
+  index "idx_status" {
+    columns = [column.status]
+  }
+  index "idx_created_at" {
+    columns = [column.created_at]
+  }
+  index "idx_contact_name" {
+    columns = [column.contact_name]
+  }
+}
+table "crm_opportunity" {
+  schema  = schema.opencoze
+  comment = "CRM sales opportunity data"
+  column "id" {
+    null     = false
+    type     = bigint
+    unsigned = true
+    comment  = "Primary Key ID"
+  }
+  column "tenant_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Tenant ID"
+  }
+  column "space_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Workspace ID"
+  }
+  column "customer_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Customer ID"
+  }
+  column "opportunity_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Opportunity Name"
+  }
+  column "stage" {
+    null    = false
+    type    = varchar(64)
+    default = "initial"
+    comment = "Opportunity Stage"
+  }
+  column "amount" {
+    null    = false
+    type    = decimal(18,2)
+    default = 0.00
+    comment = "Opportunity Amount"
+  }
+  column "expected_close_date" {
+    null    = true
+    type    = date
+    comment = "Expected Close Date"
+  }
+  column "owner_user_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Owner User ID"
+  }
+  column "owner_user_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Owner User Name"
+  }
+  column "status" {
+    null    = false
+    type    = varchar(32)
+    default = "open"
+    comment = "Business Status"
+  }
+  column "remark" {
+    null    = true
+    type    = text
+    comment = "Remark"
+  }
+  column "created_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Created By"
+  }
+  column "updated_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Updated By"
+  }
+  column "created_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Create Time in Milliseconds"
+  }
+  column "updated_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Update Time in Milliseconds"
+  }
+  column "is_deleted" {
+    null    = false
+    type    = tinyint
+    default = 0
+    comment = "Soft Delete Flag"
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_tenant_is_deleted" {
+    columns = [column.tenant_id, column.is_deleted]
+  }
+  index "idx_tenant_space_deleted" {
+    columns = [column.tenant_id, column.space_id, column.is_deleted]
+  }
+  index "idx_customer_id" {
+    columns = [column.customer_id]
+  }
+  index "idx_owner_user_id" {
+    columns = [column.owner_user_id]
+  }
+  index "idx_status" {
+    columns = [column.status]
+  }
+  index "idx_created_at" {
+    columns = [column.created_at]
+  }
+  index "idx_stage" {
+    columns = [column.stage]
+  }
+}
+table "crm_follow_record" {
+  schema  = schema.opencoze
+  comment = "CRM follow-up record data"
+  column "id" {
+    null     = false
+    type     = bigint
+    unsigned = true
+    comment  = "Primary Key ID"
+  }
+  column "tenant_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Tenant ID"
+  }
+  column "space_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Workspace ID"
+  }
+  column "customer_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Customer ID"
+  }
+  column "contact_id" {
+    null     = true
+    type     = bigint
+    unsigned = true
+    comment  = "Contact ID"
+  }
+  column "follow_type" {
+    null    = false
+    type    = varchar(64)
+    default = ""
+    comment = "Follow Type"
+  }
+  column "content" {
+    null    = false
+    type    = text
+    comment = "Follow Content"
+  }
+  column "next_follow_time" {
+    null    = true
+    type    = datetime(3)
+    comment = "Next Follow Time"
+  }
+  column "owner_user_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Owner User ID"
+  }
+  column "owner_user_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Owner User Name"
+  }
+  column "status" {
+    null    = false
+    type    = varchar(32)
+    default = "active"
+    comment = "Business Status"
+  }
+  column "created_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Created By"
+  }
+  column "updated_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Updated By"
+  }
+  column "created_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Create Time in Milliseconds"
+  }
+  column "updated_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Update Time in Milliseconds"
+  }
+  column "is_deleted" {
+    null    = false
+    type    = tinyint
+    default = 0
+    comment = "Soft Delete Flag"
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_tenant_is_deleted" {
+    columns = [column.tenant_id, column.is_deleted]
+  }
+  index "idx_tenant_space_deleted" {
+    columns = [column.tenant_id, column.space_id, column.is_deleted]
+  }
+  index "idx_customer_id" {
+    columns = [column.customer_id]
+  }
+  index "idx_contact_id" {
+    columns = [column.contact_id]
+  }
+  index "idx_owner_user_id" {
+    columns = [column.owner_user_id]
+  }
+  index "idx_status" {
+    columns = [column.status]
+  }
+  index "idx_created_at" {
+    columns = [column.created_at]
+  }
+  index "idx_next_follow_time" {
+    columns = [column.next_follow_time]
+  }
+}
+table "crm_product" {
+  schema  = schema.opencoze
+  comment = "CRM product master data"
+  column "id" {
+    null     = false
+    type     = bigint
+    unsigned = true
+    comment  = "Primary Key ID"
+  }
+  column "tenant_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Tenant ID"
+  }
+  column "space_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Workspace ID"
+  }
+  column "product_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Product Name"
+  }
+  column "product_code" {
+    null    = true
+    type    = varchar(64)
+    comment = "Product Code"
+  }
+  column "category" {
+    null    = true
+    type    = varchar(128)
+    comment = "Product Category"
+  }
+  column "unit_price" {
+    null    = false
+    type    = decimal(18,2)
+    default = 0.00
+    comment = "Unit Price"
+  }
+  column "status" {
+    null    = false
+    type    = varchar(32)
+    default = "active"
+    comment = "Business Status"
+  }
+  column "remark" {
+    null    = true
+    type    = text
+    comment = "Remark"
+  }
+  column "created_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Created By"
+  }
+  column "updated_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Updated By"
+  }
+  column "created_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Create Time in Milliseconds"
+  }
+  column "updated_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Update Time in Milliseconds"
+  }
+  column "is_deleted" {
+    null    = false
+    type    = tinyint
+    default = 0
+    comment = "Soft Delete Flag"
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_tenant_is_deleted" {
+    columns = [column.tenant_id, column.is_deleted]
+  }
+  index "idx_tenant_space_deleted" {
+    columns = [column.tenant_id, column.space_id, column.is_deleted]
+  }
+  index "idx_status" {
+    columns = [column.status]
+  }
+  index "idx_created_at" {
+    columns = [column.created_at]
+  }
+  index "idx_product_code" {
+    columns = [column.product_code]
+  }
+  index "idx_product_name" {
+    columns = [column.product_name]
+  }
+  index "idx_category" {
+    columns = [column.category]
+  }
+}
+table "crm_sales_order" {
+  schema  = schema.opencoze
+  comment = "CRM sales order data"
+  column "id" {
+    null     = false
+    type     = bigint
+    unsigned = true
+    comment  = "Primary Key ID"
+  }
+  column "tenant_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Tenant ID"
+  }
+  column "space_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Workspace ID"
+  }
+  column "customer_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Customer ID"
+  }
+  column "opportunity_id" {
+    null     = true
+    type     = bigint
+    unsigned = true
+    comment  = "Opportunity ID"
+  }
+  column "product_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Product ID"
+  }
+  column "product_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Product Snapshot Name"
+  }
+  column "sales_user_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Sales User ID"
+  }
+  column "sales_user_name" {
+    null    = false
+    type    = varchar(128)
+    default = ""
+    comment = "Sales User Name"
+  }
+  column "quantity" {
+    null    = false
+    type    = decimal(18,2)
+    default = 0.00
+    comment = "Sales Quantity"
+  }
+  column "amount" {
+    null    = false
+    type    = decimal(18,2)
+    default = 0.00
+    comment = "Sales Amount"
+  }
+  column "order_date" {
+    null    = true
+    type    = date
+    comment = "Order Date"
+  }
+  column "status" {
+    null    = false
+    type    = varchar(32)
+    default = "draft"
+    comment = "Business Status"
+  }
+  column "remark" {
+    null    = true
+    type    = text
+    comment = "Remark"
+  }
+  column "created_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Created By"
+  }
+  column "updated_by" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Updated By"
+  }
+  column "created_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Create Time in Milliseconds"
+  }
+  column "updated_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Update Time in Milliseconds"
+  }
+  column "is_deleted" {
+    null    = false
+    type    = tinyint
+    default = 0
+    comment = "Soft Delete Flag"
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_tenant_is_deleted" {
+    columns = [column.tenant_id, column.is_deleted]
+  }
+  index "idx_tenant_space_deleted" {
+    columns = [column.tenant_id, column.space_id, column.is_deleted]
+  }
+  index "idx_customer_id" {
+    columns = [column.customer_id]
+  }
+  index "idx_opportunity_id" {
+    columns = [column.opportunity_id]
+  }
+  index "idx_product_id" {
+    columns = [column.product_id]
+  }
+  index "idx_sales_user_id" {
+    columns = [column.sales_user_id]
+  }
+  index "idx_status" {
+    columns = [column.status]
+  }
+  index "idx_created_at" {
+    columns = [column.created_at]
+  }
+  index "idx_order_date" {
+    columns = [column.order_date]
+  }
+}
+table "crm_audit_log" {
+  schema  = schema.opencoze
+  comment = "CRM audit log"
+  column "id" {
+    null     = false
+    type     = bigint
+    unsigned = true
+    comment  = "Audit Log ID"
+  }
+  column "tenant_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Tenant ID"
+  }
+  column "space_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Workspace ID"
+  }
+  column "resource_type" {
+    null    = false
+    type    = varchar(64)
+    default = ""
+    comment = "Resource Type"
+  }
+  column "resource_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Resource ID"
+  }
+  column "action" {
+    null    = false
+    type    = varchar(32)
+    default = ""
+    comment = "Action Type"
+  }
+  column "operator_id" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Operator User ID"
+  }
+  column "before_snapshot" {
+    null    = true
+    type    = mediumtext
+    comment = "Before Snapshot JSON"
+  }
+  column "after_snapshot" {
+    null    = true
+    type    = mediumtext
+    comment = "After Snapshot JSON"
+  }
+  column "operation_at" {
+    null     = false
+    type     = bigint
+    default  = 0
+    unsigned = true
+    comment  = "Operation Time in Milliseconds"
+  }
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_tenant_space_operation_at" {
+    columns = [column.tenant_id, column.space_id, column.operation_at]
+  }
+  index "idx_resource" {
+    columns = [column.resource_type, column.resource_id]
+  }
+  index "idx_operator_id" {
+    columns = [column.operator_id]
+  }
+  index "idx_action" {
+    columns = [column.action]
+  }
+}
 schema "opencoze" {
   charset = "utf8mb4"
   collate = "utf8mb4_unicode_ci"

@@ -17,6 +17,7 @@ include "./app/bot_open_api.thrift"
 include "./upload/upload.thrift"
 include "./admin/config.thrift"
 include "./im/im.thrift"
+include "./crm/crm.thrift"
 
 
 
@@ -41,3 +42,10 @@ service BotOpenApiService extends bot_open_api.BotOpenApiService {}
 service UploadService extends upload.UploadService {}
 service ConfigService extends config.ConfigService {}
 service IMService extends im.IMService {}
+service CrmCustomerService extends crm.CrmCustomerService {}
+service CrmContactService extends crm.CrmContactService {}
+service CrmOpportunityService extends crm.CrmOpportunityService {}
+service CrmFollowRecordService extends crm.CrmFollowRecordService {}
+service CrmProductService extends crm.CrmProductService {}
+service CrmSalesOrderService extends crm.CrmSalesOrderService {}
+service CrmDashboardService extends crm.CrmDashboardService {}
