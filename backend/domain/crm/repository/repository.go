@@ -31,6 +31,10 @@ type Repository interface {
 	FollowRecordRepository
 	ProductRepository
 	SalesOrderRepository
+	QueryRepository
+	SemanticRepository
+	QueryLogRepository
+	ForecastRepository
 }
 
 type DashboardRepository interface {

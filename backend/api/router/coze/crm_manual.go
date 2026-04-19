@@ -77,4 +77,10 @@ func RegisterManualCRMRoutes(r *server.Hertz) {
 	salesOrder.POST("/create", cozehandler.CreateSalesOrder)
 	salesOrder.POST("/update", cozehandler.UpdateSalesOrder)
 	salesOrder.POST("/delete", cozehandler.DeleteSalesOrder)
+
+	query := crm.Group("/query")
+	query.POST("/run", cozehandler.RunCRMNLQuery)
+	query.GET("/semantic_catalog", cozehandler.GetCRMSemanticCatalog)
+	query.GET("/logs", cozehandler.ListCRMQueryLogs)
+	query.GET("/forecast", cozehandler.GetCRMForecastResult)
 }

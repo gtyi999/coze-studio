@@ -32,12 +32,15 @@ import type {
   SalesOrderData,
 } from '@coze-studio/api-schema/crm';
 
+import { CRMNLQueryPanel } from './components/nl-query-panel';
 import { SimpleLineChart } from './components/simple-line-chart';
 import { CRMStatusTag } from './components/status-tag';
 
 interface CRMManagePageProps {
   spaceId: string;
 }
+
+type CRMPageTab = 'overview' | 'customers' | 'opportunities' | 'orders';
 
 const CARD_CLASS_NAME =
   'rounded-[20px] border border-solid coz-stroke-primary coz-bg-max p-[20px] shadow-[0_16px_40px_rgba(15,23,42,0.04)]';
@@ -85,6 +88,7 @@ const METRIC_CARDS = [
 ] as const;
 
 export const CRMManagePage: FC<CRMManagePageProps> = ({ spaceId }) => {
+  const [activeTab, setActiveTab] = useState<CRMPageTab>('overview');
   const [showCreateCustomerForm, setShowCreateCustomerForm] = useState(false);
   const [createCustomerForm, setCreateCustomerForm] = useState<CreateCustomerFormState>(getInitialCreateCustomerForm());
   const [createCustomerLoading, setCreateCustomerLoading] = useState(false);
@@ -129,6 +133,194 @@ export const CRMManagePage: FC<CRMManagePageProps> = ({ spaceId }) => {
   const overview = overviewRequest.data;
   const tables = tablesRequest.data;
   const loading = overviewRequest.loading || tablesRequest.loading;
+  const canQuickCreate =
+    activeTab === 'overview' || activeTab === 'customers';
+  const subMenuItems: Array<{
+    key: CRMPageTab;
+    label: string;
+    description: string;
+  }> = [
+    {
+      key: 'overview',
+      label: 'Overview',
+      description: 'Dashboard and snapshots',
+    },
+    {
+      key: 'customers',
+      label: 'Customers',
+      description: `${formatCount(overview?.customer_total)} total`,
+    },
+    {
+      key: 'opportunities',
+      label: 'Opportunities',
+      description: `${formatCount(overview?.new_opportunities_this_month)} new this month`,
+    },
+    {
+      key: 'orders',
+      label: 'Orders',
+      description: `${formatAmount(overview?.sales_order_total_amount)} amount`,
+    },
+  ];
+
+  const renderMetricCardSection = (
+    keys: Array<(typeof METRIC_CARDS)[number]['key']>,
+  ) => {
+    const items = METRIC_CARDS.filter(item => keys.includes(item.key));
+
+    return (
+      <section
+        className={`grid grid-cols-1 gap-[16px] ${getMetricGridClassName(items.length)}`}
+      >
+        {items.map(item => (
+          <MetricCard
+            key={item.key}
+            title={item.title}
+            background={item.background}
+            value={getMetricValue(overview, item.key)}
+          />
+        ))}
+      </section>
+    );
+  };
+
+  const customerSnapshotCard = (
+    <DashboardTableCard
+      title="Customer Snapshot"
+      description="Most recently updated customers"
+      headers={['Customer', 'Owner', 'Status', 'Updated']}
+      rows={(tables?.customers ?? []).map(item => [
+        item.customer_name || '-',
+        item.owner_user_name || '-',
+        (
+          <CRMStatusTag
+            key={`customer-status-${item.customer_id}`}
+            value={item.status}
+          />
+        ),
+        formatDateTime(item.updated_at),
+      ])}
+    />
+  );
+
+  const opportunitySnapshotCard = (
+    <DashboardTableCard
+      title="Opportunity Snapshot"
+      description="Most recently updated opportunities"
+      headers={['Opportunity', 'Stage', 'Amount', 'Status']}
+      rows={(tables?.opportunities ?? []).map(item => [
+        item.opportunity_name || '-',
+        item.stage || '-',
+        formatAmount(item.amount),
+        (
+          <CRMStatusTag
+            key={`opportunity-status-${item.opportunity_id}`}
+            value={item.status}
+          />
+        ),
+      ])}
+    />
+  );
+
+  const orderSnapshotCard = (
+    <DashboardTableCard
+      title="Order Snapshot"
+      description="Most recently updated sales orders"
+      headers={['Product', 'Amount', 'Order Date', 'Status']}
+      rows={(tables?.salesOrders ?? []).map(item => [
+        item.product_name || '-',
+        formatAmount(item.amount),
+        item.order_date || '-',
+        (
+          <CRMStatusTag
+            key={`order-status-${item.sales_order_id}`}
+            value={item.status}
+          />
+        ),
+      ])}
+    />
+  );
+
+  const orderTrendSection = (
+    <section className={`${CARD_CLASS_NAME} min-h-[360px]`}>
+      <div className="mb-[16px] flex flex-wrap items-end justify-between gap-[12px]">
+        <div>
+          <Typography.Title heading={6} className="!mb-[4px]">
+            Recent 30-Day Order Trend
+          </Typography.Title>
+          <Typography.Paragraph className="!mb-0 coz-fg-secondary">
+            The line is drawn by order amount and scoped to the current
+            tenant workspace.
+          </Typography.Paragraph>
+        </div>
+        <Typography.Text className="coz-fg-secondary text-[12px]">
+          {overview?.recent_order_trend?.length ?? 0} daily points
+        </Typography.Text>
+      </div>
+      <SimpleLineChart data={overview?.recent_order_trend ?? []} />
+    </section>
+  );
+
+  const renderActiveSection = () => {
+    switch (activeTab) {
+      case 'customers':
+        return (
+          <>
+            <SectionIntro
+              title="Customer Management"
+              description="Review customer records and keep the quick-create flow close to the customer list."
+            />
+            {renderMetricCardSection([
+              'customer_total',
+              'new_customers_this_month',
+            ])}
+            {customerSnapshotCard}
+          </>
+        );
+      case 'opportunities':
+        return (
+          <>
+            <SectionIntro
+              title="Opportunity Pipeline"
+              description="Focus on the latest business opportunities without leaving the CRM workspace."
+            />
+            {renderMetricCardSection([
+              'opportunity_total_amount',
+              'new_opportunities_this_month',
+            ])}
+            {opportunitySnapshotCard}
+          </>
+        );
+      case 'orders':
+        return (
+          <>
+            <SectionIntro
+              title="Sales Orders"
+              description="Track order amount trends and keep the latest order records in one place."
+            />
+            {renderMetricCardSection(['sales_order_total_amount'])}
+            {orderTrendSection}
+            {orderSnapshotCard}
+          </>
+        );
+      case 'overview':
+      default:
+        return (
+          <>
+            {renderMetricCardSection(
+              METRIC_CARDS.map(item => item.key) as Array<
+                (typeof METRIC_CARDS)[number]['key']
+              >,
+            )}
+            {orderTrendSection}
+            <section className="grid grid-cols-1 gap-[16px] 2xl:grid-cols-3">
+              {customerSnapshotCard}
+              {opportunitySnapshotCard}
+              {orderSnapshotCard}
+            </section>
+          </>
+        );
+    }
+  };
 
   const onCreateCustomerSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -162,6 +354,15 @@ export const CRMManagePage: FC<CRMManagePageProps> = ({ spaceId }) => {
     }
   };
 
+  const openCRMAgentPanel = () => {
+    setActiveTab('overview');
+    setTimeout(() => {
+      document
+        .getElementById('crm-ai-agent-panel')
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 0);
+  };
+
   return (
     <Layout className="h-full overflow-hidden">
       <Layout.Header className="pb-0">
@@ -186,20 +387,82 @@ export const CRMManagePage: FC<CRMManagePageProps> = ({ spaceId }) => {
               Refresh
             </Button>
             <Button
-              onClick={() => {
-                setCreateCustomerError('');
-                setShowCreateCustomerForm(value => !value);
-              }}
+              color="secondary"
+              data-testid="crm-open-agent-entry"
+              onClick={openCRMAgentPanel}
             >
-              {showCreateCustomerForm ? 'Hide Quick Create' : 'Quick Create Customer'}
+              Open CRM Agent
             </Button>
+            {canQuickCreate ? (
+              <Button
+                onClick={() => {
+                  setCreateCustomerError('');
+                  setShowCreateCustomerForm(value => !value);
+                }}
+              >
+                {showCreateCustomerForm
+                  ? 'Hide Quick Create'
+                  : 'Quick Create Customer'}
+              </Button>
+            ) : null}
           </div>
         </div>
       </Layout.Header>
       <Layout.Content className="!h-auto !min-h-0 !flex-1 overflow-auto pb-[24px]">
         <Spin spinning={loading}>
           <div className="mt-[12px] flex flex-col gap-[16px]">
-            {showCreateCustomerForm ? (
+            <section
+              className={`${CARD_CLASS_NAME} bg-[linear-gradient(135deg,#ffffff_0%,#f8fafc_52%,#e2e8f0_100%)]`}
+            >
+              <div className="mb-[12px]">
+                <Typography.Title heading={6} className="!mb-[4px]">
+                  CRM Sections
+                </Typography.Title>
+                <Typography.Paragraph className="!mb-0 coz-fg-secondary">
+                  Use the submenu below to switch between dashboard, customer,
+                  opportunity and order views.
+                </Typography.Paragraph>
+              </div>
+              <div className="grid grid-cols-1 gap-[12px] md:grid-cols-2 xl:grid-cols-4">
+                {subMenuItems.map(item => {
+                  const isActive = item.key === activeTab;
+
+                  return (
+                    <button
+                      key={item.key}
+                      type="button"
+                      data-testid={`crm-submenu-${item.key}`}
+                      aria-pressed={isActive}
+                      onClick={() => {
+                        setActiveTab(item.key);
+                        if (
+                          item.key !== 'overview' &&
+                          item.key !== 'customers'
+                        ) {
+                          setShowCreateCustomerForm(false);
+                        }
+                      }}
+                      className={`rounded-[16px] border border-solid px-[16px] py-[14px] text-left transition ${
+                        isActive
+                          ? 'border-[#2563eb] bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_60%,#dbeafe_100%)] shadow-[0_12px_32px_rgba(37,99,235,0.12)]'
+                          : 'coz-stroke-primary bg-white hover:border-[#93c5fd] hover:bg-[rgba(239,246,255,0.55)]'
+                      }`}
+                    >
+                      <div className="text-[14px] font-[600] coz-fg-primary">
+                        {item.label}
+                      </div>
+                      <div className="mt-[6px] text-[12px] coz-fg-secondary">
+                        {item.description}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            <CRMNLQueryPanel spaceId={spaceId} />
+
+            {showCreateCustomerForm && canQuickCreate ? (
               <section className={`${CARD_CLASS_NAME} bg-[linear-gradient(135deg,#eff6ff_0%,#ffffff_56%,#dbeafe_100%)]`}>
                 <div className="mb-[16px]">
                   <Typography.Title heading={6} className="!mb-[4px]">
@@ -287,85 +550,7 @@ export const CRMManagePage: FC<CRMManagePageProps> = ({ spaceId }) => {
               </section>
             ) : null}
 
-            <section className="grid grid-cols-1 gap-[16px] md:grid-cols-2 xl:grid-cols-5">
-              {METRIC_CARDS.map(item => (
-                <MetricCard
-                  key={item.key}
-                  title={item.title}
-                  background={item.background}
-                  value={getMetricValue(overview, item.key)}
-                />
-              ))}
-            </section>
-
-            <section className={`${CARD_CLASS_NAME} min-h-[360px]`}>
-              <div className="mb-[16px] flex flex-wrap items-end justify-between gap-[12px]">
-                <div>
-                  <Typography.Title heading={6} className="!mb-[4px]">
-                    Recent 30-Day Order Trend
-                  </Typography.Title>
-                  <Typography.Paragraph className="!mb-0 coz-fg-secondary">
-                    The line is drawn by order amount and scoped to the current
-                    tenant workspace.
-                  </Typography.Paragraph>
-                </div>
-                <Typography.Text className="coz-fg-secondary text-[12px]">
-                  {overview?.recent_order_trend?.length ?? 0} daily points
-                </Typography.Text>
-              </div>
-              <SimpleLineChart data={overview?.recent_order_trend ?? []} />
-            </section>
-
-            <section className="grid grid-cols-1 gap-[16px] 2xl:grid-cols-3">
-              <DashboardTableCard
-                title="Customer Snapshot"
-                description="Most recently updated customers"
-                headers={['Customer', 'Owner', 'Status', 'Updated']}
-                rows={(tables?.customers ?? []).map(item => [
-                  item.customer_name || '-',
-                  item.owner_user_name || '-',
-                  (
-                    <CRMStatusTag
-                      key={`customer-status-${item.customer_id}`}
-                      value={item.status}
-                    />
-                  ),
-                  formatDateTime(item.updated_at),
-                ])}
-              />
-              <DashboardTableCard
-                title="Opportunity Snapshot"
-                description="Most recently updated opportunities"
-                headers={['Opportunity', 'Stage', 'Amount', 'Status']}
-                rows={(tables?.opportunities ?? []).map(item => [
-                  item.opportunity_name || '-',
-                  item.stage || '-',
-                  formatAmount(item.amount),
-                  (
-                    <CRMStatusTag
-                      key={`opportunity-status-${item.opportunity_id}`}
-                      value={item.status}
-                    />
-                  ),
-                ])}
-              />
-              <DashboardTableCard
-                title="Order Snapshot"
-                description="Most recently updated sales orders"
-                headers={['Product', 'Amount', 'Order Date', 'Status']}
-                rows={(tables?.salesOrders ?? []).map(item => [
-                  item.product_name || '-',
-                  formatAmount(item.amount),
-                  item.order_date || '-',
-                  (
-                    <CRMStatusTag
-                      key={`order-status-${item.sales_order_id}`}
-                      value={item.status}
-                    />
-                  ),
-                ])}
-              />
-            </section>
+            {renderActiveSection()}
           </div>
         </Spin>
       </Layout.Content>
@@ -443,6 +628,22 @@ const DashboardTableCard: FC<{
       </div>
     )}
   </div>
+);
+
+const SectionIntro: FC<{
+  title: string;
+  description: string;
+}> = ({ title, description }) => (
+  <section
+    className={`${CARD_CLASS_NAME} bg-[linear-gradient(135deg,#f8fafc_0%,#ffffff_52%,#eef2ff_100%)]`}
+  >
+    <Typography.Title heading={6} className="!mb-[4px]">
+      {title}
+    </Typography.Title>
+    <Typography.Paragraph className="!mb-0 coz-fg-secondary">
+      {description}
+    </Typography.Paragraph>
+  </section>
 );
 
 const FormField: FC<{
@@ -539,6 +740,19 @@ function formatAmount(value?: string): string {
     minimumFractionDigits: 0,
     maximumFractionDigits: 2,
   }).format(Number(value || 0));
+}
+
+function getMetricGridClassName(count: number): string {
+  switch (count) {
+    case 1:
+      return 'md:grid-cols-1 xl:grid-cols-1';
+    case 2:
+      return 'md:grid-cols-2 xl:grid-cols-2';
+    case 3:
+      return 'md:grid-cols-2 xl:grid-cols-3';
+    default:
+      return 'md:grid-cols-2 xl:grid-cols-5';
+  }
 }
 
 function formatDateTime(value?: string): string {

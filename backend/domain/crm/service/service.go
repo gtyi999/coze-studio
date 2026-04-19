@@ -25,10 +25,39 @@ import (
 
 type Components struct {
 	Repository repository.Repository
+	Agent      AgentService
+	Forecast   ForecastEngine
+}
+
+type AgentService interface {
+	RewriteQuery(ctx context.Context, queryCtx *entity.QueryContext) (string, error)
+	ClassifyIntent(ctx context.Context, queryCtx *entity.QueryContext, catalog *entity.SemanticCatalog) (entity.IntentType, []string, []string, []string, error)
+	BuildSQLPlan(ctx context.Context, queryCtx *entity.QueryContext, catalog *entity.SemanticCatalog) (*entity.SQLPlan, error)
+	FormatQueryResult(ctx context.Context, queryCtx *entity.QueryContext, plan *entity.SQLPlan, execution *entity.QueryExecution) (*entity.QueryResponse, error)
+}
+
+type QueryService interface {
+	RunNLQuery(ctx context.Context, req *entity.QueryRequest) (*entity.QueryResponse, error)
+	ListQueryLogs(ctx context.Context, filter *entity.QueryLogFilter) ([]*entity.QueryLogRecord, int64, error)
+}
+
+type SemanticMetadataService interface {
+	GetSemanticCatalog(ctx context.Context, req *entity.SemanticCatalogRequest) (*entity.SemanticCatalog, error)
+}
+
+type ForecastService interface {
+	GetForecastResult(ctx context.Context, req *entity.ForecastRequest) (*entity.ForecastResult, error)
+}
+
+type ForecastEngine interface {
+	Analyze(ctx context.Context, req *entity.ForecastRequest, features []*entity.ForecastFeature) (*entity.ForecastResult, error)
 }
 
 type CRM interface {
 	GetDashboardOverview(ctx context.Context, scope *entity.Scope) (*entity.DashboardOverview, error)
+	QueryService
+	SemanticMetadataService
+	ForecastService
 
 	CreateCustomer(ctx context.Context, customer *entity.Customer) (*entity.Customer, error)
 	UpdateCustomer(ctx context.Context, customer *entity.Customer) (*entity.Customer, error)
@@ -68,6 +97,15 @@ type CRM interface {
 }
 
 func NewService(components *Components) CRM {
+	if components == nil {
+		components = &Components{}
+	}
+	if components.Agent == nil {
+		components.Agent = noopAgentService{}
+	}
+	if components.Forecast == nil {
+		components.Forecast = noopForecastEngine{}
+	}
 	return &crmService{
 		components: components,
 	}

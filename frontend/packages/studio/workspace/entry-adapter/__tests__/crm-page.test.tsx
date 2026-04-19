@@ -109,6 +109,18 @@ describe('CRMManagePage', () => {
     });
 
     expect(await screen.findByText('CRM Dashboard')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Overview' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Customers' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Opportunities' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Orders' }),
+    ).toBeInTheDocument();
     expect(screen.getByText('Customers')).toBeInTheDocument();
     expect(screen.getByText('36')).toBeInTheDocument();
     expect(screen.getByText('Recent 30-Day Order Trend')).toBeInTheDocument();
@@ -116,6 +128,24 @@ describe('CRMManagePage', () => {
     expect(screen.getByText('Star Manufacturing')).toBeInTheDocument();
     expect(screen.getByText('East Region Renewal')).toBeInTheDocument();
     expect(screen.getByText('AI Seat Package')).toBeInTheDocument();
+  });
+
+  it('switches crm sub menu views', async () => {
+    render(<CRMManagePage spaceId="1" />);
+
+    await screen.findByText('CRM Dashboard');
+
+    fireEvent.click(screen.getByRole('button', { name: 'Customers' }));
+
+    expect(await screen.findByText('Customer Management')).toBeInTheDocument();
+    expect(screen.getByText('Customer Snapshot')).toBeInTheDocument();
+    expect(screen.queryByText('Opportunity Pipeline')).not.toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole('button', { name: 'Orders' }));
+
+    expect(await screen.findByText('Sales Orders')).toBeInTheDocument();
+    expect(screen.getByText('Order Snapshot')).toBeInTheDocument();
+    expect(screen.getByText('Recent 30-Day Order Trend')).toBeInTheDocument();
   });
 
   it('opens quick create form and submits the minimal customer payload', async () => {
@@ -158,5 +188,21 @@ describe('CRMManagePage', () => {
       expect(listCustomersMock).toHaveBeenCalledTimes(2);
       expect(getDashboardOverviewMock).toHaveBeenCalledTimes(2);
     });
+  });
+
+  it('runs the crm nl query panel and renders the mock result', async () => {
+    render(<CRMManagePage spaceId="1" />);
+
+    await screen.findByText('CRM Dashboard');
+
+    fireEvent.click(screen.getByTestId('crm-run-query-button'));
+
+    expect(
+      await screen.findByText(
+        'There are 1,277 active customers in the current workspace.',
+      ),
+    ).toBeInTheDocument();
+    expect(screen.getByText('Structured Result')).toBeInTheDocument();
+    expect(screen.getByText('Active Customer Count')).toBeInTheDocument();
   });
 });

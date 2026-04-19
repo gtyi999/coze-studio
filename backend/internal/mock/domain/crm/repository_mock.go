@@ -1339,3 +1339,93 @@ func (mr *MockSalesOrderRepositoryMockRecorder) UpdateSalesOrder(ctx, salesOrder
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSalesOrder", reflect.TypeOf((*MockSalesOrderRepository)(nil).UpdateSalesOrder), ctx, salesOrder)
 }
+
+// AppendQueryLog mocks base method.
+func (m *MockRepository) AppendQueryLog(ctx context.Context, record *entity.QueryLogRecord) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "AppendQueryLog", ctx, record)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// AppendQueryLog indicates an expected call of AppendQueryLog.
+func (mr *MockRepositoryMockRecorder) AppendQueryLog(ctx, record any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AppendQueryLog", reflect.TypeOf((*MockRepository)(nil).AppendQueryLog), ctx, record)
+}
+
+// ExecuteQueryPlan mocks base method.
+func (m *MockRepository) ExecuteQueryPlan(ctx context.Context, queryCtx *entity.QueryContext, plan *entity.SQLPlan) (*entity.QueryExecution, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ExecuteQueryPlan", ctx, queryCtx, plan)
+	ret0, _ := ret[0].(*entity.QueryExecution)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ExecuteQueryPlan indicates an expected call of ExecuteQueryPlan.
+func (mr *MockRepositoryMockRecorder) ExecuteQueryPlan(ctx, queryCtx, plan any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExecuteQueryPlan", reflect.TypeOf((*MockRepository)(nil).ExecuteQueryPlan), ctx, queryCtx, plan)
+}
+
+// ExplainQueryPlan mocks base method.
+func (m *MockRepository) ExplainQueryPlan(ctx context.Context, queryCtx *entity.QueryContext, plan *entity.SQLPlan) (*entity.QueryCost, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ExplainQueryPlan", ctx, queryCtx, plan)
+	ret0, _ := ret[0].(*entity.QueryCost)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ExplainQueryPlan indicates an expected call of ExplainQueryPlan.
+func (mr *MockRepositoryMockRecorder) ExplainQueryPlan(ctx, queryCtx, plan any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ExplainQueryPlan", reflect.TypeOf((*MockRepository)(nil).ExplainQueryPlan), ctx, queryCtx, plan)
+}
+
+// GetSemanticCatalog mocks base method.
+func (m *MockRepository) GetSemanticCatalog(ctx context.Context, scope *entity.Scope, req *entity.SemanticCatalogRequest) (*entity.SemanticCatalog, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSemanticCatalog", ctx, scope, req)
+	ret0, _ := ret[0].(*entity.SemanticCatalog)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSemanticCatalog indicates an expected call of GetSemanticCatalog.
+func (mr *MockRepositoryMockRecorder) GetSemanticCatalog(ctx, scope, req any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSemanticCatalog", reflect.TypeOf((*MockRepository)(nil).GetSemanticCatalog), ctx, scope, req)
+}
+
+// ListForecastFeatures mocks base method.
+func (m *MockRepository) ListForecastFeatures(ctx context.Context, scope *entity.Scope, req *entity.ForecastRequest) ([]*entity.ForecastFeature, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListForecastFeatures", ctx, scope, req)
+	ret0, _ := ret[0].([]*entity.ForecastFeature)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// ListForecastFeatures indicates an expected call of ListForecastFeatures.
+func (mr *MockRepositoryMockRecorder) ListForecastFeatures(ctx, scope, req any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListForecastFeatures", reflect.TypeOf((*MockRepository)(nil).ListForecastFeatures), ctx, scope, req)
+}
+
+// ListQueryLogs mocks base method.
+func (m *MockRepository) ListQueryLogs(ctx context.Context, filter *entity.QueryLogFilter) ([]*entity.QueryLogRecord, int64, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "ListQueryLogs", ctx, filter)
+	ret0, _ := ret[0].([]*entity.QueryLogRecord)
+	ret1, _ := ret[1].(int64)
+	ret2, _ := ret[2].(error)
+	return ret0, ret1, ret2
+}
+
+// ListQueryLogs indicates an expected call of ListQueryLogs.
+func (mr *MockRepositoryMockRecorder) ListQueryLogs(ctx, filter any) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "ListQueryLogs", reflect.TypeOf((*MockRepository)(nil).ListQueryLogs), ctx, filter)
+}
