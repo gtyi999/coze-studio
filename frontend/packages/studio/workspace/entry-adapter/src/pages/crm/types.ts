@@ -20,6 +20,7 @@ export type CRMQueryIntentType =
   | 'top_sales_current_quarter'
   | 'sales_topn_current_quarter'
   | 'product_sales_topn'
+  | 'public_pool_count'
   | 'forecast_hot_product';
 
 export type CRMChartType = 'unknown' | 'stat' | 'bar' | 'line' | 'table';
